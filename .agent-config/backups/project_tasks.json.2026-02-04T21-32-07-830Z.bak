@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "version": "1.0.4",
+    "last_updated": "2026-02-04T20:34:00+01:00",
+    "last_agent": "Antigravity-Secrets-Observability"
+  },
+  "tasks": [
+    {
+      "id": "TASK-001",
+      "title": "hi",
+      "status": "in_progress",
+      "priority": "medium",
+      "skill": "general",
+      "active_integrations": [],
+      "active_mcps": [],
+      "active_skills": [],
+      "created": "2026-02-04T21:28:06.968Z",
+      "updated": "2026-02-04T21:28:13.129Z"
+    }
+  ]
+}

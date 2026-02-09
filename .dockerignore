@@ -1,0 +1,9 @@
+node_modules
+dist
+.git
+.agent-config/backups
+services/web-ui/node_modules
+services/web-ui/dist
+services/agent-runtime/data
+refinement-history-*.png
+*.log

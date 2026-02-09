@@ -1,0 +1,82 @@
+{
+  "$schema": "https://opencode.ai/tasks.json",
+  "meta": {
+    "version": "1.0.0",
+    "last_updated": "2026-02-09T20:45:00.000Z",
+    "last_agent": "system-demo"
+  },
+  "tasks": [
+    {
+      "id": "TASK-001",
+      "title": "Fix Authentication Bug on Login Page",
+      "description": "Users report intermittent 500 errors when logging in via SSO. Need to investigate logs and fix the race condition in the auth service.",
+      "status": "in_progress",
+      "skill": "coding",
+      "priority": "critical",
+      "category": "bug",
+      "repository": "opencoworkers-auth",
+      "active_skills": [
+        "github",
+        "debug-tool"
+      ],
+      "created": "2026-02-09T09:00:00Z"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Analyze Q4 Sales Data for Board Meeting",
+      "description": "Download the raw sales CSV from Stripe, clean the data to remove refunded transactions, and generate a summary Pivot Table in Excel showing revenue by region.",
+      "status": "pending",
+      "skill": "data-analysis",
+      "priority": "high",
+      "category": "finance",
+      "repository": "finance-reports",
+      "active_skills": [
+        "pandas",
+        "excel-generator"
+      ],
+      "created": "2026-02-09T10:15:00Z"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Draft Onboarding Documentation for New Hires",
+      "description": "Create a comprehensive Markdown guide for setting up the local development environment. Include steps for Docker, Node.js, and API keys.",
+      "status": "review",
+      "skill": "writing",
+      "priority": "medium",
+      "category": "documentation",
+      "repository": "opencoworkers-docs",
+      "active_skills": [
+        "markdown-linter"
+      ],
+      "created": "2026-02-08T14:30:00Z"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Research Competitor AI Features",
+      "description": "Conduct market research on top 5 competitors. Identify key differentiators in their AI agent offerings and compile a report.",
+      "status": "done",
+      "skill": "research",
+      "priority": "low",
+      "category": "product",
+      "repository": "product-strategy",
+      "active_skills": [
+        "web-search"
+      ],
+      "created": "2026-02-07T11:45:00Z"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Optimize Docker Image Build Time",
+      "description": "The current CI/CD pipeline takes 15 minutes to build the runtime image. Optimize the Dockerfile with multi-stage builds and better caching.",
+      "status": "pending",
+      "skill": "devops",
+      "priority": "medium",
+      "category": "infrastructure",
+      "repository": "opencoworkers-deploy",
+      "active_skills": [
+        "docker"
+      ],
+      "created": "2026-02-09T13:20:00Z"
+    }
+  ]
+}

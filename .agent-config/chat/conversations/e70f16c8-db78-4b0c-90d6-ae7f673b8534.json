@@ -1,0 +1,22 @@
+{
+  "id": "e70f16c8-db78-4b0c-90d6-ae7f673b8534",
+  "title": "hi",
+  "messages": [
+    {
+      "id": "2404ae4b-86ce-4cb5-bc88-e6ed13247d96",
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-02-09T13:50:19.135Z"
+    },
+    {
+      "id": "2143b20e-1330-43f6-ad91-5ce0524b7fd5",
+      "role": "assistant",
+      "content": "No response received from the AI model.",
+      "timestamp": "2026-02-09T13:50:21.237Z",
+      "model": "claude-sonnet-4-20250514"
+    }
+  ],
+  "model": "claude-sonnet-4-20250514",
+  "createdAt": "2026-02-09T13:50:19.133Z",
+  "updatedAt": "2026-02-09T13:50:21.237Z"
+}

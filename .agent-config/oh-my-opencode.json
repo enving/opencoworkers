@@ -1,0 +1,6 @@
+{
+  "agents": {
+    "prometheus": {},
+    "sisyphus-junior": {}
+  }
+}

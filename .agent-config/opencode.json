@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "build": {
+      "disable": false,
+      "temperature": 0.8
+    },
+    "plan": {
+      "disable": false
+    }
+  },
+  "mcp": {
+    "filesystem": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@anthropics/mcp-server-filesystem"
+      ],
+      "enabled": true
+    }
+  },
+  "provider": {}
+}

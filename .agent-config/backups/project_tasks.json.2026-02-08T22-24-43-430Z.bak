@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "version": "1.0.4",
+    "last_updated": "2026-02-04T21:32:08.845Z",
+    "last_agent": "pm-sync-plugin"
+  },
+  "tasks": [
+    {
+      "id": "TASK-001",
+      "title": "hi",
+      "status": "in_progress",
+      "skill": "general",
+      "priority": "medium",
+      "created": "2026-02-04T21:28:06.968Z",
+      "updated": "2026-02-04T21:28:13.129Z",
+      "active_integrations": [],
+      "active_mcps": [],
+      "active_skills": [],
+      "orchestration_state": "in_progress"
+    }
+  ]
+}

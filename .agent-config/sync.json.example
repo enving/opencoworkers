@@ -1,0 +1,29 @@
+{
+  "_comment": "⚠️ EXAMPLE ONLY - DO NOT USE IN DEV REPO!",
+  "_note": "For actual Jira integration testing, use: /home/enving/Dev/Repositories/opencode_plugins/jira_opencode_plugin_test",
+  "_warning": "During plugin DEVELOPMENT, DO NOT sync with Jira. Development tasks are managed manually.",
+
+  "adapter": "jira",
+  "jira": {
+    "apiKey": "${JIRA_API_KEY}",
+    "email": "your-email@example.com",
+    "projectId": "YOUR_PROJECT",
+    "baseUrl": "https://your-domain.atlassian.net",
+    "jql": "project = YOUR_PROJECT AND labels = \"opencode-sync\" AND status != Done ORDER BY priority DESC",
+    "projects": {
+      "PROJ1": {
+        "repository": "/home/user/repos/project1",
+        "default_branch": "main",
+        "description": "First Project"
+      },
+      "PROJ2": {
+        "repository": "/home/user/repos/project2",
+        "default_branch": "main"
+      }
+    }
+  },
+  "sync": {
+    "tasksFile": ".agent-config/tasks.json",
+    "debounceMs": 500
+  }
+}

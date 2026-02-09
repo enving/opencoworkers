@@ -1,0 +1,35 @@
+{
+  "id": "a23993c6-fc4d-4d00-b281-2f12112a8ff9",
+  "title": "First test message 1770558379670",
+  "messages": [
+    {
+      "id": "e6b2d489-24aa-44e4-af26-bdabaf364e0b",
+      "role": "user",
+      "content": "Second test message 1770558379748",
+      "timestamp": "2026-02-08T13:46:23.040Z"
+    },
+    {
+      "id": "5eb26106-b89f-47a9-9344-e82dba6def16",
+      "role": "assistant",
+      "content": "No response received from the AI model.",
+      "timestamp": "2026-02-08T13:46:34.244Z",
+      "model": "claude-sonnet-4-20250514"
+    },
+    {
+      "id": "9d558540-0055-4b40-bb65-56e8f91e2a25",
+      "role": "user",
+      "content": "Long message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong message\nLong test message 1770558383083",
+      "timestamp": "2026-02-08T13:46:34.424Z"
+    },
+    {
+      "id": "0f60bea2-e1f7-44df-9a69-e27a4681a299",
+      "role": "assistant",
+      "content": "No response received from the AI model.",
+      "timestamp": "2026-02-08T13:46:38.085Z",
+      "model": "claude-sonnet-4-20250514"
+    }
+  ],
+  "model": "claude-sonnet-4-20250514",
+  "createdAt": "2026-02-08T13:46:22.967Z",
+  "updatedAt": "2026-02-08T13:46:38.085Z"
+}

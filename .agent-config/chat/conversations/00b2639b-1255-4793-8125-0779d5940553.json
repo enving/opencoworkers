@@ -1,0 +1,22 @@
+{
+  "id": "00b2639b-1255-4793-8125-0779d5940553",
+  "title": "First test message 1770558452538",
+  "messages": [
+    {
+      "id": "4584e842-6f5e-49be-a1b1-6629fcf27619",
+      "role": "user",
+      "content": "First test message 1770558452538",
+      "timestamp": "2026-02-08T13:47:32.566Z"
+    },
+    {
+      "id": "e035d4d7-7f1f-4fea-b7b1-f3d7c8ff805f",
+      "role": "assistant",
+      "content": "No response received from the AI model.",
+      "timestamp": "2026-02-08T13:47:35.405Z",
+      "model": "claude-sonnet-4-20250514"
+    }
+  ],
+  "model": "claude-sonnet-4-20250514",
+  "createdAt": "2026-02-08T13:47:32.566Z",
+  "updatedAt": "2026-02-08T13:47:35.405Z"
+}

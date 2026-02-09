@@ -1,0 +1,171 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "OpenCoworkers Feature List Schema",
+    "type": "object",
+    "required": [
+        "meta",
+        "features"
+    ],
+    "properties": {
+        "meta": {
+            "type": "object",
+            "required": [
+                "version",
+                "status",
+                "project_name"
+            ],
+            "properties": {
+                "version": {
+                    "type": "string",
+                    "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "stable",
+                        "maintenance",
+                        "deprecated"
+                    ]
+                },
+                "project_name": {
+                    "type": "string"
+                },
+                "last_updated": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "context": {
+                    "type": "string"
+                },
+                "last_agent": {
+                    "type": "string"
+                }
+            }
+        },
+        "features": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "status",
+                    "priority"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "pattern": "^FEAT-[A-Z0-9-]+$"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "feature",
+                            "bugfix",
+                            "hotfix",
+                            "refactor",
+                            "infrastructure",
+                            "experiment",
+                            "docs"
+                        ]
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "backlog",
+                            "planned",
+                            "in-progress",
+                            "testing",
+                            "completed",
+                            "blocked"
+                        ]
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": [
+                            "low",
+                            "medium",
+                            "high",
+                            "critical"
+                        ]
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "frontend",
+                            "backend",
+                            "devops",
+                            "ui-ux",
+                            "security",
+                            "api",
+                            "core"
+                        ]
+                    },
+                    "complexity": {
+                        "type": "string",
+                        "enum": [
+                            "XS",
+                            "S",
+                            "M",
+                            "L",
+                            "XL"
+                        ]
+                    },
+                    "assigned_to": {
+                        "type": "string"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "dependencies": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "tasks": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "acceptance_criteria": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "review_message": {
+                        "type": "string"
+                    },
+                    "verified_by": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "container": {
+                        "type": "string",
+                        "enum": [
+                            "opencoworkers-ui",
+                            "opencoworkers-daemon",
+                            "opencoworkers-runtime",
+                            "opencoworkers-onlyoffice",
+                            "all"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

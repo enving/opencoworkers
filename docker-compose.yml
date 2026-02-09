@@ -1,0 +1,129 @@
+# =============================================================================
+# OPENCOWORKERS - Docker Compose Stack
+# =============================================================================
+# Project:     OpenCoworkers (Virtual Workforce Automation Platform)
+# Repository:  /home/enving/Dev/Repositories/opencoworkers
+# Network:     opencoworkers-network
+# -----------------------------------------------------------------------------
+# PORTS USED BY THIS PROJECT (non-standard to avoid conflicts):
+#   7850  → Web UI (React Dashboard)
+#   7851  → Daemon API (Orchestrator)
+#   7852  → OpenCode Server (Agent Runtime)
+#   7853  → OnlyOffice (Document editing, optional)
+# -----------------------------------------------------------------------------
+# CONTAINER NAMING CONVENTION:
+#   All containers use prefix: opencoworkers-
+#   Examples: opencoworkers-ui, opencoworkers-daemon, opencoworkers-runtime
+# -----------------------------------------------------------------------------
+# DO NOT CONFUSE WITH:
+#   - OpenClaw (different project, uses different ports)
+#   - Other OpenCode-based projects
+# =============================================================================
+
+version: '3.8'
+
+services:
+  # ---------------------------------------------------------------------------
+  # THE BRAIN (Orchestrator)
+  # Node.js backend that syncs PM tools (Plane/Jira) with agent sessions.
+  # API available at: http://localhost:7851
+  # ---------------------------------------------------------------------------
+  daemon:
+    container_name: opencoworkers-daemon
+    build:
+      context: .
+      dockerfile: services/daemon/Dockerfile
+    ports:
+      - "7851:3847"   # Daemon API (internal 3847 → exposed 7851)
+    volumes:
+      - ./.agent-config:/app/.agent-config
+      - ./.agents:/app/.agents
+    env_file: .env
+    restart: always
+    networks:
+      - opencoworkers-network
+
+  # ---------------------------------------------------------------------------
+  # THE FACE (User Interface)
+  # React Dashboard for monitoring agents and managing tasks.
+  # Available at: http://localhost:7850
+  # ---------------------------------------------------------------------------
+  ui:
+    container_name: opencoworkers-ui
+    build:
+      context: ./services/web-ui
+    ports:
+      - "7850:80"     # Web UI (internal 80 → exposed 7850)
+    depends_on:
+      - daemon
+    restart: always
+    networks:
+      - opencoworkers-network
+
+  # ---------------------------------------------------------------------------
+  # THE HANDS (Agent Execution Runtime)
+  # Sandboxed OpenCode server where AI agents execute tasks.
+  # API available at: http://localhost:7852
+  # ---------------------------------------------------------------------------
+  runtime:
+    container_name: opencoworkers-runtime
+    build:
+      context: ./services/agent-runtime
+    ports:
+      - "7852:4096"   # OpenCode Server API (internal 4096 → exposed 7852)
+    volumes:
+      - ./services/agent-runtime/data/Skills:/root/.config/opencode/skill
+      - ./.agent-config/opencode.json:/root/.config/opencode/opencode.json:ro
+    env_file: .env
+    environment:
+      - OPENCODE_PASSWORD=opencode-sandbox
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY}
+      # Model read from opencode.json
+    command: opencode serve --port 4096 --hostname 0.0.0.0 --log-level DEBUG --print-logs
+    restart: always
+    networks:
+      - opencoworkers-network
+
+  # ---------------------------------------------------------------------------
+  # ONLYOFFICE (Optional - Document Editing)
+  # Collaborative document server for PPTX/XLSX editing.
+  # Available at: http://localhost:7853
+  # ---------------------------------------------------------------------------
+  onlyoffice:
+    image: onlyoffice/documentserver:latest
+    container_name: opencoworkers-onlyoffice
+    ports:
+      - "7853:80"     # OnlyOffice Web UI (internal 80 → exposed 7853)
+    environment:
+      - JWT_ENABLED=false
+      - NODE_ENV=production
+    restart: always
+    networks:
+      - opencoworkers-network
+
+  # ---------------------------------------------------------------------------
+  # LONG-TERM MEMORY (Vector Database)
+  # ChromaDB for storing and retrieving agent memories (RAG).
+  # Available at: http://localhost:7854
+  # ---------------------------------------------------------------------------
+  vector-db:
+    image: chromadb/chroma:latest
+    container_name: opencoworkers-vectordb
+    ports:
+      - "7854:8000"   # ChromaDB API (internal 8000 → exposed 7854)
+    volumes:
+      - ./services/vector-db/data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+    restart: always
+    networks:
+      - opencoworkers-network
+
+# =============================================================================
+# NETWORK CONFIGURATION
+# Unique network name to isolate this project from others on the same host.
+# =============================================================================
+networks:
+  opencoworkers-network:
+    name: opencoworkers-network
+    driver: bridge

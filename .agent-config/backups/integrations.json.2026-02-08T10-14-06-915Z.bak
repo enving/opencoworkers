@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0",
+  "integrations": [
+    {
+      "id": "e4e9d5c7-f9c8-4c08-898a-15150c3131e6",
+      "name": "HTTPBin Test",
+      "description": "E2E Verification",
+      "baseUrl": "https://httpbin.org",
+      "headers": {},
+      "authType": "none",
+      "authConfig": {},
+      "isDefault": false,
+      "enabled": true,
+      "createdAt": "2026-01-25T21:13:38.393Z",
+      "updatedAt": "2026-01-25T21:13:38.393Z"
+    },
+    {
+      "id": "24d01f39-0a68-4955-87d6-a06ddc9a1e6b",
+      "name": "Förderwissensgraph",
+      "description": "",
+      "baseUrl": "https://foerderwissensgraph.digitalalchemisten.de/api",
+      "headers": {},
+      "authType": "none",
+      "authConfig": {},
+      "isDefault": false,
+      "enabled": true,
+      "semanticInstructions": "Use this API to research funding guidelines (Förderrichtlinien), ancillary provisions (Nebenbestimmungen), and legal requirements for grants. You can search for specific topics or query the knowledge graph for relationships between different regulations.",
+      "suggestedUseCases": ["Nebenbestimmungen", "Förderrichtlinien", "Rechtsprüfung"],
+      "createdAt": "2026-01-25T21:36:08.663Z",
+      "updatedAt": "2026-01-25T21:36:08.663Z"
+    }
+  ]
+}

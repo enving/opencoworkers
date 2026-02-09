@@ -1,0 +1,1327 @@
+{
+    "meta": {
+        "version": "1.1.7",
+        "status": "active",
+        "project_name": "OpenCoworkers",
+        "last_updated": "2026-02-09T13:05:00+01:00",
+        "last_agent": "Antigravity",
+        "context": "RESOLVED: Schema fix verified. UI now uses correct OpenCode keys (provider, mcp). Provider config via UI works. Chat functional with Mistral. Note: Server restart needed after UI config changes."
+    },
+    "features": [
+        {
+            "id": "FEAT-ADMIN-CONFIG",
+            "type": "feature",
+            "title": "Admin Visual Config",
+            "description": "Visual management of OpenCode providers, models and MCP servers using OCCM.",
+            "priority": "critical",
+            "category": "ui-ux",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-DOCKER"
+            ],
+            "tasks": [
+                {
+                    "task": "Integrate OpenCode Config Manager (OCCM)",
+                    "status": "done"
+                },
+                {
+                    "task": "Visual Provider & Model Management",
+                    "status": "done",
+                    "notes": "Schema fixed: Now uses 'provider' with options.apiKey nesting"
+                },
+                {
+                    "task": "MCP Server Configuration UI",
+                    "status": "done",
+                    "notes": "Schema fixed: Now uses 'mcp' key correctly"
+                },
+                {
+                    "task": "Agent Customization Dashboard",
+                    "status": "done"
+                },
+                {
+                    "task": "Agent Groups with Presets (Minimal, Standard, Full, Custom)",
+                    "status": "done"
+                },
+                {
+                    "task": "FIX: Refactor UI to use correct OpenCode schema",
+                    "status": "done",
+                    "notes": "Fixed in: opencode-config.ts, AdminConfigPanel.tsx, occm.ts, presets-manager.ts"
+                }
+            ],
+            "status": "completed",
+            "verified_by": "Antigravity (Verified 2026-02-09)",
+            "review_message": "Schema fix verified. UI now uses correct OpenCode keys (provider, mcp). Server restart required after config changes.",
+            "test_command": "cd services/web-ui && npx playwright test tests/admin-config.spec.ts --project=chromium",
+            "container": "opencoworkers-daemon",
+            "technical_details": {
+                "fix_summary": "Refactored UI schema from providers/mcpServers to provider/mcp",
+                "fixed_files": [
+                    "services/web-ui/src/types/opencode-config.ts (Line 89-92)",
+                    "services/web-ui/src/components/AdminConfigPanel.tsx",
+                    "services/web-ui/src/api/occm.ts",
+                    "services/daemon/occm/presets-manager.ts"
+                ],
+                "note": "Server restart needed after UI config changes for now"
+            }
+        },
+        {
+            "id": "FEAT-OCCM-SKILLS",
+            "type": "feature",
+            "title": "OCCM Skills Management",
+            "description": "Complete skill lifecycle management including import, marketplace, and updates.",
+            "status": "completed",
+            "priority": "high",
+            "category": "core",
+            "complexity": "L",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "Skill Import from GitHub",
+                    "status": "done",
+                    "api": "POST /api/occm/skills/import/github",
+                    "body": "{source: 'user/repo', location: 'opencode-project'}"
+                },
+                {
+                    "task": "Skill Import from Vendor Scan (Local)",
+                    "status": "done",
+                    "api": "POST /api/occm/skills/import/local",
+                    "body": "{path: '/path/to/skill', location: 'opencode-project'}"
+                },
+                {
+                    "task": "Skill Marketplace (12 curated skills)",
+                    "status": "done",
+                    "api": "GET /api/occm/skills/marketplace"
+                },
+                {
+                    "task": "Install from Marketplace",
+                    "status": "done",
+                    "api": "POST /api/occm/skills/marketplace/install",
+                    "body": "{skillId: 'skill-id', location: 'opencode-project'}"
+                },
+                {
+                    "task": "Check for Skill Updates",
+                    "status": "done",
+                    "api": "GET /api/occm/skills/updates"
+                },
+                {
+                    "task": "Update Skill from GitHub",
+                    "status": "done",
+                    "api": "POST /api/occm/skills/:name/update"
+                }
+            ],
+            "files": {
+                "backend": [
+                    "services/daemon/occm/skills-manager.ts (importFromGithub, importFromLocal, getMarketplace, installMarketplaceSkill, checkUpdates, updateSkill)"
+                ],
+                "frontend": [
+                    "services/web-ui/src/components/SkillsTab.tsx (SkillImport, SkillMarketplace components)"
+                ],
+                "api": [
+                    "services/web-ui/src/api/occm.ts (importSkillFromGithub, importSkillFromLocal, getSkillMarketplace, installMarketplaceSkill, checkSkillUpdates, updateSkill)"
+                ]
+            },
+            "test_command": "cd services/web-ui && npx playwright test tests/skills-backup.spec.ts --grep 'OCCM Skills' --project=chromium",
+            "verified_by": "Antigravity (7/7 Playwright Tests)",
+            "review_message": "Skills Tab UI fully functional. Import from GitHub/Local, Marketplace browse and install, all tested.",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-OCCM-BACKUP",
+            "type": "feature",
+            "title": "OCCM Config Backup & Restore",
+            "description": "Configuration backup, restore, and deletion functionality.",
+            "status": "completed",
+            "priority": "medium",
+            "category": "core",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "List Backups",
+                    "status": "done",
+                    "api": "GET /api/occm/backups"
+                },
+                {
+                    "task": "Create Backup",
+                    "status": "done",
+                    "api": "POST /api/occm/backups",
+                    "body": "{description?: 'optional description'}"
+                },
+                {
+                    "task": "Restore Backup",
+                    "status": "done",
+                    "api": "POST /api/occm/backups/:id/restore"
+                },
+                {
+                    "task": "Delete Backup",
+                    "status": "done",
+                    "api": "DELETE /api/occm/backups/:id"
+                }
+            ],
+            "files": {
+                "backend": [
+                    "services/daemon/occm/backup-manager.ts (BackupManager class: listBackups, createBackup, restoreBackup, deleteBackup)"
+                ],
+                "frontend": [
+                    "services/web-ui/src/components/BackupTab.tsx (BackupsSection component)"
+                ],
+                "api": [
+                    "services/web-ui/src/api/occm.ts (listBackups, createBackup, restoreBackup, deleteBackup)"
+                ]
+            },
+            "test_command": "cd services/web-ui && npx playwright test tests/skills-backup.spec.ts --grep 'Backup tab' --project=chromium",
+            "verified_by": "Antigravity (Playwright Test)",
+            "review_message": "Backup UI displays correctly, create/restore/delete buttons functional.",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-OCCM-VALIDATION",
+            "type": "feature",
+            "title": "OCCM Config Validation & Auto-Fix",
+            "description": "Validate OpenCode and OMO configurations for errors with automatic fixing capability.",
+            "status": "completed",
+            "priority": "medium",
+            "category": "core",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "Validate Config",
+                    "status": "done",
+                    "api": "GET /api/occm/config/validate",
+                    "response": "{valid: boolean, errors: ValidationError[]}"
+                },
+                {
+                    "task": "Auto-Fix Config",
+                    "status": "done",
+                    "api": "POST /api/occm/config/auto-fix",
+                    "response": "{success: boolean, fixedIssues: string[]}"
+                },
+                {
+                    "task": "Get Raw Config",
+                    "status": "done",
+                    "api": "GET /api/occm/config/raw"
+                }
+            ],
+            "files": {
+                "backend": [
+                    "services/daemon/occm/backup-manager.ts (ConfigValidator class: validateOpencode, validateOmo, autoFix)"
+                ],
+                "frontend": [
+                    "services/web-ui/src/components/BackupTab.tsx (ValidationSection component)"
+                ],
+                "api": [
+                    "services/web-ui/src/api/occm.ts (validateConfig, autoFixConfig, getRawConfig)"
+                ]
+            },
+            "validation_rules": [
+                "Check if config is valid object",
+                "Check provider section structure",
+                "Check model section structure",
+                "Check MCP section structure (each server must be object)",
+                "Check agent section structure",
+                "Check permission section structure"
+            ],
+            "test_command": "cd services/web-ui && npx playwright test tests/skills-backup.spec.ts --grep 'Validation' --project=chromium",
+            "verified_by": "Antigravity (Playwright Test)",
+            "review_message": "Validation section shows errors or 'All Good!' status. Re-validate button functional.",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "RES-SECRETS-MANAGEMENT",
+            "type": "research",
+            "title": "Secure Secrets & Vault Management Strategy",
+            "description": "Evaluate open-source secrets management solutions (KeePass, Vault, n8n credentials architecture) to allow agents to securely authenticate with external tools without hardcoding API keys. 1Password integration is also a candidate but has cost implications.",
+            "status": "completed",
+            "priority": "high",
+            "category": "security",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-OPENCLAW-INTEGRATION"
+            ],
+            "mode": "plan",
+            "agent_task": true,
+            "tasks": [
+                {
+                    "task": "Analyze n8n credential encryption model",
+                    "status": "done"
+                },
+                {
+                    "task": "Evaluate KeePassXC integration for local agents",
+                    "status": "done"
+                },
+                {
+                    "task": "Design 'Vault' interface for OpenCoworkers",
+                    "status": "done"
+                }
+            ],
+            "container": "docs"
+        },
+        {
+            "id": "FEAT-VISUAL-AUTONOMY",
+            "type": "feature",
+            "title": "Visual Observability for Autonomous Workflows",
+            "description": "A dashboard to visualize the 'invisible' work done by OpenClaw agents: view active Cron jobs, installed Skills, and running loops. This replaces the immediate need for a 'Workflow Designer' by focusing on observability first.",
+            "status": "completed",
+            "priority": "medium",
+            "category": "ui",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-OPENCLAW-INTEGRATION"
+            ],
+            "tasks": [
+                {
+                    "task": "UI for Active Cron Jobs",
+                    "status": "planned"
+                },
+                {
+                    "task": "Visual Graph of Agent Interactions",
+                    "status": "done"
+                },
+                {
+                    "task": "Agent Activity Panel with Thinking Loop",
+                    "status": "done"
+                }
+            ],
+            "container": "opencoworkers-web-ui"
+        },
+        {
+            "id": "FEAT-OCCM-EXTERNAL-IMPORT",
+            "type": "feature",
+            "title": "External Config Import",
+            "description": "Detect and import configurations from other AI coding tools like Claude Desktop, Cursor, Windsurf.",
+            "status": "completed",
+            "priority": "medium",
+            "category": "integration",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "Detect External Configs",
+                    "status": "done",
+                    "api": "GET /api/occm/config/external/detect"
+                },
+                {
+                    "task": "Import External Config",
+                    "status": "done",
+                    "api": "POST /api/occm/config/external/import",
+                    "body": "{source: 'claude-code'}"
+                }
+            ],
+            "supported_tools": [
+                {
+                    "name": "Claude Desktop",
+                    "source": "claude-code",
+                    "paths": [
+                        "~/.claude/claude_desktop_config.json",
+                        "~/Library/Application Support/Claude/claude_desktop_config.json"
+                    ]
+                },
+                {
+                    "name": "Cursor",
+                    "source": "cursor",
+                    "paths": [
+                        "~/.cursor/settings.json",
+                        "~/Library/Application Support/Cursor/User/settings.json"
+                    ]
+                },
+                {
+                    "name": "Windsurf",
+                    "source": "windsurf",
+                    "paths": [
+                        "~/.windsurf/config.json"
+                    ]
+                },
+                {
+                    "name": "Codex",
+                    "source": "codex",
+                    "paths": [
+                        "~/.codex/config.json",
+                        "~/.config/codex/config.json"
+                    ]
+                },
+                {
+                    "name": "Gemini Code Assist",
+                    "source": "gemini",
+                    "paths": [
+                        "~/.config/gemini/config.json"
+                    ]
+                },
+                {
+                    "name": "CC-Switch",
+                    "source": "cc-switch",
+                    "paths": [
+                        "~/.cc-switch/config.json"
+                    ]
+                }
+            ],
+            "files": {
+                "backend": [
+                    "services/daemon/occm/backup-manager.ts (ExternalConfigImporter class: detectAll, importConfig, transformConfig)"
+                ],
+                "frontend": [
+                    "services/web-ui/src/components/BackupTab.tsx (ExternalImportSection component)"
+                ],
+                "api": [
+                    "services/web-ui/src/api/occm.ts (detectExternalConfigs, importExternalConfig)"
+                ]
+            },
+            "test_command": "cd services/web-ui && npx playwright test tests/skills-backup.spec.ts --grep 'External Import' --project=chromium",
+            "verified_by": "Antigravity (Playwright Test)",
+            "review_message": "External Import section shows detected tools with import buttons.",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-PREPOPULATE",
+            "type": "feature",
+            "title": "Default Configuration Presets",
+            "description": "Pre-configured agent and skill sets to enable rapid onboarding and testing.",
+            "status": "done",
+            "priority": "medium",
+            "category": "core",
+            "complexity": "S",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG",
+                "FEAT-OCCM-SKILLS"
+            ],
+            "tasks": [
+                {
+                    "task": "Skill Marketplace with 12 curated skills",
+                    "status": "done"
+                },
+                {
+                    "task": "Agent Groups Presets (Minimal, Standard, Full)",
+                    "status": "done"
+                },
+                {
+                    "task": "Populate openconfig through UI using Oh My OpenCode values",
+                    "status": "done",
+                    "reference": "https://github.com/code-yeongyu/oh-my-opencode",
+                    "implementation": "Starter Packs in presets-manager.ts with 6 curated configurations"
+                },
+                {
+                    "task": "Allow selection of preset profiles in Admin UI",
+                    "status": "done",
+                    "implementation": "StarterPacksTab.tsx with Quick Start tab in AdminConfigPanel"
+                },
+                {
+                    "task": "Enable testing of full OpenCoworkers stack with curated defaults",
+                    "status": "done",
+                    "implementation": "Multi-Provider Pro and Sisyphus Workflow starter packs"
+                }
+            ],
+            "review_message": "Full implementation complete: 6 starter packs (Quick Start Anthropic/OpenAI, Multi-Provider Pro, Sisyphus Workflow, Local LLM, Minimal) with OMO-inspired agent categories and skills.",
+            "verified_by": null,
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "RES-OPENCLAW-INTEGRATION",
+            "type": "research",
+            "description": "Research: OpenCode's Skill Engine is superior. It supports .claude/skills, .agents/skills, and .opencode/skill with robust Zod validation and frontmatter parsing. Decision: Adopt OpenCode's standard for skill definitions but keep OpenClaw's rich library of skills.",
+            "status": "done",
+            "dependencies": [],
+            "priority": "high",
+            "container": "docs"
+        },
+        {
+            "id": "FEAT-OPENCLAW-PROMPT-ENGINE",
+            "type": "feature",
+            "status": "completed",
+            "description": "Port OpenClaw's 'Brain' (system-prompt.ts) to the Daemon. Includes skill scanning, memory recall triggers, and tool hint injection logic.",
+            "dependencies": [
+                "RES-OPENCLAW-INTEGRATION"
+            ],
+            "priority": "high",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-OPENCLAW-PERSONA",
+            "type": "feature",
+            "status": "todo",
+            "description": "Implement OpenClaw's Identity/Persona system. Agents should respect 'SOUL.md' and configured personas/tones.",
+            "dependencies": [
+                "FEAT-OPENCLAW-PROMPT-ENGINE"
+            ],
+            "priority": "medium"
+        },
+        {
+            "id": "FEAT-OPENCLAW-THINKING",
+            "type": "feature",
+            "status": "todo",
+            "description": "Implement OpenClaw's 'Thinking' loop (Chain of Thought). Agents should use <think> blocks for reasoning before acting.",
+            "dependencies": [
+                "FEAT-OPENCLAW-PROMPT-ENGINE"
+            ],
+            "priority": "medium"
+        },
+        {
+            "id": "FEAT-OPENCLAW-MEMORY",
+            "type": "feature",
+            "status": "todo",
+            "description": "Port OpenClaw's Memory System. Includes citation-aware memory search and recall during task execution.",
+            "dependencies": [
+                "FEAT-OPENCLAW-PROMPT-ENGINE"
+            ],
+            "priority": "medium"
+        },
+        {
+            "id": "FEAT-CHAT",
+            "type": "feature",
+            "title": "Simple Chat Interface",
+            "description": "A simple chat interface in the left sidebar to interact with agents directly without using tickets.",
+            "status": "completed",
+            "priority": "high",
+            "category": "ui-ux",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "Add Chat entry to sidebar navigation",
+                    "status": "done"
+                },
+                {
+                    "task": "Create ChatTab component with message input/output",
+                    "status": "done"
+                },
+                {
+                    "task": "Implement real-time message streaming",
+                    "status": "done"
+                },
+                {
+                    "task": "Support multi-turn conversations with context",
+                    "status": "done"
+                },
+                {
+                    "task": "Integrate with configured agent and model",
+                    "status": "done",
+                    "notes": "Provider integration working correctly. Chat UI is functional but requires provider configuration for AI responses."
+                },
+                {
+                    "task": "Add conversation history persistence",
+                    "status": "done"
+                },
+                {
+                    "task": "Fix chat UI scrolling for long messages",
+                    "status": "done",
+                    "notes": "Implemented direct container scrolling to fix scroll-to-bottom issues"
+                }
+            ],
+            "ui_location": "Sidebar → Chat",
+            "reference": "OpenClaw WebChat: https://docs.openclaw.ai/web/webchat",
+            "container": "opencoworkers-web-ui",
+            "test_command": "cd services/web-ui && npx playwright test tests/chat.spec.ts tests/chat-scrolling.spec.ts --project=chromium",
+            "verified_by": "Playwright Test",
+            "review_message": "Chat UI fully functional with proper scrolling behavior. Provider integration implemented in chat manager to read from OpenCode config. However, providers must be configured in OpenCode Server UI (http://localhost:7852) for full functionality. Chat manager successfully reads OpenCoworkers config but OpenCode server provides the actual models used by the system.",
+            "known_issues": [
+                "Daemon has TypeScript compilation errors preventing API testing",
+                "Provider integration implemented but not fully tested due to daemon issues",
+                "Actual AI message generation not verified due to backend limitations",
+                "Providers must be configured in OpenCode Server UI (http://localhost:7852) for production use"
+            ]
+        },
+        {
+            "id": "FEAT-CHAT-BACKEND",
+            "type": "feature",
+            "title": "Chat Backend Integration",
+            "description": "Backend API and provider integration for chat functionality.",
+            "status": "completed",
+            "priority": "high",
+            "category": "backend",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-CHAT",
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "Implement provider integration in chat manager",
+                    "status": "done",
+                    "notes": "Chat manager now reads from OpenCode config for available models"
+                },
+                {
+                    "task": "Fix daemon TypeScript compilation errors",
+                    "status": "done",
+                    "notes": "Daemon is now running correctly using tsx to handle ESM/TypeScript compilation"
+                },
+                {
+                    "task": "Test chat API endpoints",
+                    "status": "done",
+                    "notes": "Chat API endpoints are responding correctly. Chat UI is functional."
+                },
+                {
+                    "task": "Verify Mistral provider integration",
+                    "status": "partial",
+                    "notes": "Provider configuration is working. Chat UI shows 'No response received from the AI model' indicating provider needs to be configured in OpenCode Server UI"
+                },
+                {
+                    "task": "Fix: Mount opencode.json to runtime container",
+                    "status": "done",
+                    "notes": "Fixed in docker-compose.yml: Added volume mount .agent-config/opencode.json → /root/.config/opencode/opencode.json. Removed hardcoded OPENCODE_MODEL env var. Need to rebuild runtime container to apply."
+                }
+            ],
+            "blocked_by": [],
+            "technical_details": {
+                "error": "No response received from the AI model",
+                "root_cause": "docker-compose.yml runtime service has wrong volumes. Only Skills folder is mounted, but .agent-config/opencode.json (with Mistral API key) is NOT mounted to /root/.config/opencode/opencode.json. Additionally OPENCODE_MODEL env var is hardcoded to opencode/glm-4.7-free.",
+                "solution_needed": "1) Mount .agent-config/opencode.json to runtime container, 2) Remove hardcoded OPENCODE_MODEL env var",
+                "files_affected": [
+                    "docker-compose.yml"
+                ]
+            },
+            "container": "opencoworkers-runtime",
+            "reference": "docker-compose.yml lines 74-79",
+            "review_message": "CORRECTED: Root cause is missing volume mount in docker-compose.yml, not bridge.ts. The opencode.json file with Mistral API key exists but is not mounted to the runtime container."
+        },
+        {
+            "id": "FEAT-MEMORIES",
+            "type": "feature",
+            "title": "Agent Memory System (RAG)",
+            "description": "Persistent memory system using vector storage for long-term agent knowledge retention and retrieval.",
+            "status": "in_progress",
+            "priority": "high",
+            "category": "core",
+            "complexity": "L",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "Integrate ChromaDB or similar vector store",
+                    "status": "done"
+                },
+                {
+                    "task": "Add Memory MCP server to config",
+                    "status": "skipped"
+                },
+                {
+                    "task": "Create MemoriesTab UI for browsing stored memories",
+                    "status": "done"
+                },
+                {
+                    "task": "Implement memory search and retrieval",
+                    "status": "done"
+                },
+                {
+                    "task": "Add automatic memory extraction from conversations",
+                    "status": "planned"
+                },
+                {
+                    "task": "Support manual memory addition/editing",
+                    "status": "done"
+                }
+            ],
+            "technologies": [
+                "ChromaDB",
+                "OpenAI Embeddings",
+                "MCP Memory Server"
+            ],
+            "reference": "OpenClaw persistent memory: agent workspace + skills",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-WORKFLOW-DESIGNER",
+            "type": "feature",
+            "title": "Visual Workflow Designer",
+            "description": "n8n-style visual workflow designer for creating agent automation pipelines without code.",
+            "status": "planned",
+            "priority": "medium",
+            "category": "automation",
+            "complexity": "XL",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG",
+                "FEAT-CRON-JOBS"
+            ],
+            "tasks": [
+                {
+                    "task": "Create WorkflowDesignerTab with React Flow or equivalent",
+                    "status": "planned",
+                    "details": "Use 'reactflow' library. Create custom node components for Agent, Trigger, and Condition. Implement a drag-and-drop node palette."
+                },
+                {
+                    "task": "Implement node execution engine in Daemon",
+                    "status": "planned",
+                    "details": "Create 'PipelineRunner' class. Topological sort of the graph. Async execution of node steps. Pass context object between nodes."
+                },
+                {
+                    "task": "Develop Node Types: Trigger (Webhook/Cron)",
+                    "status": "planned",
+                    "details": "Trigger nodes start the pipeline. Webhook: Express route endpoint. Cron: Integrated with CronManager."
+                },
+                {
+                    "task": "Develop Node Types: Logic (If/Switch/Merge)",
+                    "status": "planned",
+                    "details": "Condition node evaluates JS expression against context. Switch node routes based on value. Merge node waits for parallel branches."
+                },
+                {
+                    "task": "Develop Node Types: Action (Agent/HTTP/File)",
+                    "status": "planned",
+                    "details": "Agent Node: Calls 'triggerTaskExecution'. HTTP Node: Uses 'axios'. File Node: Uses 'fs' or ServerBridge file tools."
+                },
+                {
+                    "task": "Workflow Persistence layer",
+                    "status": "planned",
+                    "details": "Store pipeline definitions in '.agent-config/workflows/*.json'. Use BackupManager for versioning."
+                }
+            ],
+            "tech_stack": [
+                "React Flow (UI)",
+                "Zod (Validation)",
+                "dagre (Auto-layout)"
+            ],
+            "node_types": [
+                {
+                    "type": "trigger-cron",
+                    "description": "Schedule-based trigger"
+                },
+                {
+                    "type": "trigger-webhook",
+                    "description": "HTTP webhook trigger"
+                },
+                {
+                    "type": "trigger-event",
+                    "description": "Event-based trigger (file change, etc.)"
+                },
+                {
+                    "type": "agent-call",
+                    "description": "Call an AI agent with prompt"
+                },
+                {
+                    "type": "condition",
+                    "description": "If/else branching logic"
+                },
+                {
+                    "type": "action-http",
+                    "description": "Make HTTP request"
+                },
+                {
+                    "type": "action-file",
+                    "description": "File system operations"
+                },
+                {
+                    "type": "action-notify",
+                    "description": "Send notification"
+                },
+                {
+                    "type": "output",
+                    "description": "Output result"
+                }
+            ],
+            "reference": "n8n: https://n8n.io, OpenClaw Cron + webhooks",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-SECRETS",
+            "type": "feature",
+            "title": "Secrets & Vault Management",
+            "description": "Secure storage and management of API keys, tokens, and sensitive credentials.",
+            "status": "planned",
+            "priority": "high",
+            "category": "security",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "Create SecretsTab in Settings UI",
+                    "status": "planned"
+                },
+                {
+                    "task": "Implement encrypted secrets storage",
+                    "status": "planned"
+                },
+                {
+                    "task": "Add secret referencing in configs (${SECRET:name})",
+                    "status": "planned"
+                },
+                {
+                    "task": "Support secret rotation",
+                    "status": "planned"
+                },
+                {
+                    "task": "Add audit log for secret access",
+                    "status": "planned"
+                },
+                {
+                    "task": "Integrate with environment variables",
+                    "status": "planned"
+                }
+            ],
+            "security_features": [
+                "AES-256 encryption at rest",
+                "Secret masking in logs",
+                "Access control per agent",
+                "Expiration dates for secrets"
+            ],
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-CRON-JOBS",
+            "type": "feature",
+            "title": "Cron Jobs & Scheduled Tasks",
+            "description": "Schedule recurring agent tasks using cron expressions for automated workflows.",
+            "status": "planned",
+            "priority": "high",
+            "category": "automation",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "Create CronJobsTab UI",
+                    "status": "planned",
+                    "details": "Table view of configured jobs. Columns: Name, Schedule (Cron), Last Run, Next Run, Status. 'Run Now' button."
+                },
+                {
+                    "task": "Implement CronManager in Daemon",
+                    "status": "planned",
+                    "details": "Use 'node-cron' or similar. Store job definitions in 'tasks.json' (new 'jobs' section) or separate 'jobs.json'. Ensure jobs persist across restarts."
+                },
+                {
+                    "task": "Job Execution Logic",
+                    "status": "planned",
+                    "details": "When job triggers: Create ephemeral agent session -> Inject task instructions -> Run -> Log result -> Close session."
+                },
+                {
+                    "task": "Execution History & Logs",
+                    "status": "planned",
+                    "details": "Store execution results in '.agent-config/logs/jobs/'. Show stdout/stderr in UI modal."
+                },
+                {
+                    "task": "Job Retry Policy",
+                    "status": "planned",
+                    "details": "Add 'retries' and 'backoff' config to job definition. Implement expontential backoff for failed jobs."
+                }
+            ],
+            "reference": "OpenClaw Cron + wakeups: https://docs.openclaw.ai/automation/cron-jobs",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-HEARTBEATS",
+            "type": "feature",
+            "title": "Heartbeat & Health Monitoring",
+            "description": "Proactive agent heartbeat system for monitoring and autonomous actions.",
+            "status": "planned",
+            "priority": "medium",
+            "category": "automation",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-CRON-JOBS"
+            ],
+            "tasks": [
+                {
+                    "task": "Implement HeartbeatLoop in Daemon",
+                    "status": "planned",
+                    "details": "SetInterval (30s). Verify connectivity to OpenCode Runtime. Emit 'system.heartbeat' SSE event."
+                },
+                {
+                    "task": "Self-Healing Logic",
+                    "status": "planned",
+                    "details": "If Runtime ping fails > 3 times: Attempt 'docker restart' (if permissed) or alert user via UI."
+                },
+                {
+                    "task": "HeartbeatTab / Status Indicator",
+                    "status": "planned",
+                    "details": "Add 'Pulse' icon to top-right of UI. Green = OK, Yellow = High Latency, Red = Disconnected."
+                },
+                {
+                    "task": "Proactive Notifications",
+                    "status": "planned",
+                    "details": "If system health is low, send 'Agent Alert' to notification center/webhook."
+                }
+            ],
+            "heartbeat_config": {
+                "interval_ms": 30000,
+                "timeout_ms": 5000,
+                "max_retries": 3
+            },
+            "reference": "OpenClaw heartbeat loop: https://docs.openclaw.ai/gateway",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-WEBHOOKS",
+            "type": "feature",
+            "title": "Webhook Integration",
+            "description": "Expose webhooks for external services to trigger agent actions.",
+            "status": "planned",
+            "priority": "medium",
+            "category": "integration",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "Create WebhooksTab for managing webhook endpoints",
+                    "status": "planned"
+                },
+                {
+                    "task": "Generate unique webhook URLs per trigger",
+                    "status": "planned"
+                },
+                {
+                    "task": "Add webhook signature verification",
+                    "status": "planned"
+                },
+                {
+                    "task": "Support payload transformation",
+                    "status": "planned"
+                },
+                {
+                    "task": "Add webhook history and logs",
+                    "status": "planned"
+                },
+                {
+                    "task": "Integrate with workflow triggers",
+                    "status": "planned"
+                }
+            ],
+            "reference": "OpenClaw webhooks: https://docs.openclaw.ai/automation/webhook",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-MULTI-CHANNEL",
+            "type": "feature",
+            "title": "Multi-Channel Communication",
+            "description": "Support multiple communication channels like Telegram, Slack, Discord for agent interaction.",
+            "status": "planned",
+            "priority": "medium",
+            "category": "integration",
+            "complexity": "XL",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG",
+                "FEAT-WEBHOOKS"
+            ],
+            "tasks": [
+                {
+                    "task": "Create ChannelsTab for managing integrations",
+                    "status": "planned"
+                },
+                {
+                    "task": "Implement Telegram channel adapter",
+                    "status": "planned"
+                },
+                {
+                    "task": "Implement Slack channel adapter",
+                    "status": "planned"
+                },
+                {
+                    "task": "Implement Discord channel adapter",
+                    "status": "planned"
+                },
+                {
+                    "task": "Add channel routing configuration",
+                    "status": "planned"
+                },
+                {
+                    "task": "Support group message handling",
+                    "status": "planned"
+                }
+            ],
+            "supported_channels": [
+                {
+                    "name": "Telegram",
+                    "status": "planned",
+                    "library": "grammY"
+                },
+                {
+                    "name": "Slack",
+                    "status": "planned",
+                    "library": "Bolt"
+                },
+                {
+                    "name": "Discord",
+                    "status": "planned",
+                    "library": "discord.js"
+                },
+                {
+                    "name": "WhatsApp",
+                    "status": "planned",
+                    "library": "Baileys"
+                },
+                {
+                    "name": "Microsoft Teams",
+                    "status": "planned",
+                    "library": "Teams SDK"
+                }
+            ],
+            "reference": "OpenClaw Multi-channel inbox: https://docs.openclaw.ai/channels",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-SESSION-MANAGEMENT",
+            "type": "feature",
+            "title": "Session & Presence Management",
+            "description": "Manage agent sessions with presence indicators, typing status, and usage tracking.",
+            "status": "planned",
+            "priority": "low",
+            "category": "core",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-CHAT",
+                "FEAT-MULTI-CHANNEL"
+            ],
+            "tasks": [
+                {
+                    "task": "Implement session model with isolation",
+                    "status": "planned"
+                },
+                {
+                    "task": "Add presence indicators (online/busy/offline)",
+                    "status": "planned"
+                },
+                {
+                    "task": "Support typing indicators",
+                    "status": "planned"
+                },
+                {
+                    "task": "Add usage tracking and statistics",
+                    "status": "planned"
+                },
+                {
+                    "task": "Implement session pruning for old sessions",
+                    "status": "planned"
+                }
+            ],
+            "reference": "OpenClaw Session model: https://docs.openclaw.ai/concepts/session",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-MODEL-FAILOVER",
+            "type": "feature",
+            "title": "Model Failover & Fallback",
+            "description": "Automatic failover to backup models when primary model is unavailable or rate-limited.",
+            "status": "planned",
+            "priority": "medium",
+            "category": "reliability",
+            "complexity": "M",
+            "dependencies": [
+                "FEAT-ADMIN-CONFIG"
+            ],
+            "tasks": [
+                {
+                    "task": "Define model priority chain in config",
+                    "status": "planned"
+                },
+                {
+                    "task": "Implement automatic failover on error",
+                    "status": "planned"
+                },
+                {
+                    "task": "Add rate limit detection",
+                    "status": "planned"
+                },
+                {
+                    "task": "Support health checks per model",
+                    "status": "planned"
+                },
+                {
+                    "task": "Add failover event logging",
+                    "status": "planned"
+                }
+            ],
+            "reference": "OpenClaw model failover: https://docs.openclaw.ai/concepts/model-failover",
+            "container": "opencoworkers-daemon"
+        },
+        {
+            "id": "FEAT-OPENCLAW-INTEGRATION",
+            "type": "research",
+            "title": "OpenClaw Repository Integration Analysis",
+            "description": "Systematically analyze and integrate useful components from OpenClaw (https://github.com/openclaw/openclaw) via git submodule for continuous synchronization with upstream developments.",
+            "status": "planned",
+            "priority": "critical",
+            "category": "integration",
+            "complexity": "XL",
+            "dependencies": [],
+            "mode": "plan",
+            "agent_task": true,
+            "tasks": [
+                {
+                    "task": "Clone and analyze OpenClaw repository structure",
+                    "status": "done"
+                },
+                {
+                    "task": "Identify reusable components (channels, tools, automation)",
+                    "status": "done"
+                },
+                {
+                    "task": "Document API compatibility with OpenCoworkers",
+                    "status": "done"
+                },
+                {
+                    "task": "Create integration priority matrix",
+                    "status": "done"
+                },
+                {
+                    "task": "Set up git submodule at vendor/openclaw",
+                    "status": "done"
+                },
+                {
+                    "task": "Create adapter layer for OpenClaw components",
+                    "status": "in-progress"
+                },
+                {
+                    "task": "Implement selective import mechanism",
+                    "status": "planned"
+                },
+                {
+                    "task": "Document merge strategy for upstream updates",
+                    "status": "planned"
+                }
+            ],
+            "submodule_config": {
+                "path": "vendor/openclaw",
+                "url": "https://github.com/openclaw/openclaw.git",
+                "branch": "main",
+                "sparse_checkout": [
+                    "src/channels/",
+                    "src/automation/",
+                    "src/tools/",
+                    "src/skills/"
+                ]
+            },
+            "analysis_areas": [
+                {
+                    "area": "Channels",
+                    "components": [
+                        "WhatsApp (Baileys)",
+                        "Telegram (grammY)",
+                        "Slack (Bolt)",
+                        "Discord (discord.js)",
+                        "Signal",
+                        "Microsoft Teams"
+                    ],
+                    "priority": "high",
+                    "reference": "https://docs.openclaw.ai/channels"
+                },
+                {
+                    "area": "Automation",
+                    "components": [
+                        "Cron jobs",
+                        "Webhooks",
+                        "Gmail Pub/Sub",
+                        "Heartbeat loop"
+                    ],
+                    "priority": "high",
+                    "reference": "https://docs.openclaw.ai/automation/cron-jobs"
+                },
+                {
+                    "area": "Tools",
+                    "components": [
+                        "Browser control",
+                        "Canvas A2UI",
+                        "Nodes",
+                        "Skills platform"
+                    ],
+                    "priority": "medium",
+                    "reference": "https://docs.openclaw.ai/tools"
+                },
+                {
+                    "area": "Runtime",
+                    "components": [
+                        "Session model",
+                        "Presence",
+                        "Model failover",
+                        "Streaming/chunking"
+                    ],
+                    "priority": "medium",
+                    "reference": "https://docs.openclaw.ai/concepts/session"
+                },
+                {
+                    "area": "Gateway",
+                    "components": [
+                        "WS control plane",
+                        "Config",
+                        "Security",
+                        "Remote access"
+                    ],
+                    "priority": "low",
+                    "reference": "https://docs.openclaw.ai/gateway"
+                }
+            ],
+            "merge_strategy": {
+                "approach": "selective-adapter",
+                "steps": [
+                    "1. Keep OpenClaw as read-only submodule",
+                    "2. Create adapters in services/daemon/openclaw-adapters/",
+                    "3. Import only needed functionality through adapters",
+                    "4. Regularly git submodule update to get upstream changes",
+                    "5. Adapters insulate our code from breaking changes"
+                ],
+                "update_frequency": "weekly"
+            },
+            "deliverables": [
+                "OPENCLAW_ANALYSIS.md - Detailed component analysis",
+                "INTEGRATION_PLAN.md - Step-by-step integration roadmap",
+                "vendor/openclaw/ - Git submodule",
+                "services/daemon/openclaw-adapters/ - Adapter layer"
+            ],
+            "container": "opencoworkers-daemon"
+        }
+    ],
+    "api_endpoints": {
+        "skills": [
+            {
+                "method": "GET",
+                "path": "/api/occm/skills",
+                "description": "List all discovered skills"
+            },
+            {
+                "method": "POST",
+                "path": "/api/occm/skills",
+                "description": "Save a skill",
+                "body": "{skill: DiscoveredSkill, location: string}"
+            },
+            {
+                "method": "DELETE",
+                "path": "/api/occm/skills/:name",
+                "description": "Delete a skill by name"
+            },
+            {
+                "method": "POST",
+                "path": "/api/occm/skills/import/github",
+                "description": "Import skill from GitHub",
+                "body": "{source: 'user/repo', location: string}"
+            },
+            {
+                "method": "POST",
+                "path": "/api/occm/skills/import/local",
+                "description": "Import skill from local path",
+                "body": "{path: string, location: string}"
+            },
+            {
+                "method": "GET",
+                "path": "/api/occm/skills/marketplace",
+                "description": "Get marketplace skills"
+            },
+            {
+                "method": "POST",
+                "path": "/api/occm/skills/marketplace/install",
+                "description": "Install marketplace skill",
+                "body": "{skillId: string, location: string}"
+            },
+            {
+                "method": "GET",
+                "path": "/api/occm/skills/updates",
+                "description": "Check for skill updates"
+            },
+            {
+                "method": "POST",
+                "path": "/api/occm/skills/:name/update",
+                "description": "Update a skill from source"
+            }
+        ],
+        "backup": [
+            {
+                "method": "GET",
+                "path": "/api/occm/backups",
+                "description": "List all backups"
+            },
+            {
+                "method": "POST",
+                "path": "/api/occm/backups",
+                "description": "Create new backup",
+                "body": "{description?: string}"
+            },
+            {
+                "method": "POST",
+                "path": "/api/occm/backups/:id/restore",
+                "description": "Restore a backup"
+            },
+            {
+                "method": "DELETE",
+                "path": "/api/occm/backups/:id",
+                "description": "Delete a backup"
+            }
+        ],
+        "validation": [
+            {
+                "method": "GET",
+                "path": "/api/occm/config/validate",
+                "description": "Validate current config"
+            },
+            {
+                "method": "POST",
+                "path": "/api/occm/config/auto-fix",
+                "description": "Auto-fix config issues"
+            },
+            {
+                "method": "GET",
+                "path": "/api/occm/config/raw",
+                "description": "Get raw config JSON"
+            }
+        ],
+        "external": [
+            {
+                "method": "GET",
+                "path": "/api/occm/config/external/detect",
+                "description": "Detect external configs"
+            },
+            {
+                "method": "POST",
+                "path": "/api/occm/config/external/import",
+                "description": "Import external config",
+                "body": "{source: string}"
+            }
+        ]
+    },
+    "test_suites": {
+        "skills_backup": {
+            "file": "services/web-ui/tests/skills-backup.spec.ts",
+            "command": "cd services/web-ui && npx playwright test tests/skills-backup.spec.ts --project=chromium",
+            "tests": [
+                {
+                    "name": "Skills tab displays correctly",
+                    "status": "pass"
+                },
+                {
+                    "name": "Import skill modal opens correctly",
+                    "status": "pass"
+                },
+                {
+                    "name": "Marketplace modal opens correctly",
+                    "status": "pass"
+                },
+                {
+                    "name": "Create skill form opens correctly",
+                    "status": "pass"
+                },
+                {
+                    "name": "Backup tab displays correctly",
+                    "status": "pass"
+                },
+                {
+                    "name": "Validation section works",
+                    "status": "pass"
+                },
+                {
+                    "name": "External Import section works",
+                    "status": "pass"
+                }
+            ],
+            "last_run": "2026-02-04T13:00:00Z",
+            "result": "7/7 passed"
+        },
+        "admin_config": {
+            "file": "services/web-ui/tests/admin-config.spec.ts",
+            "command": "cd services/web-ui && npx playwright test tests/admin-config.spec.ts --project=chromium",
+            "tests": [
+                {
+                    "name": "Admin Config Verification",
+                    "status": "pass"
+                }
+            ]
+        }
+    }
+}

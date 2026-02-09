@@ -1,0 +1,15 @@
+{
+  "profiles": [
+    {
+      "id": "server-local-runtime",
+      "name": "Local Runtime",
+      "host": "10.255.255.254",
+      "port": 7852,
+      "apiKey": "opencode-sandbox",
+      "type": "docker-managed",
+      "isDefault": true,
+      "lastHealthCheck": "2026-02-03T05:39:09.373Z",
+      "status": "online"
+    }
+  ]
+}

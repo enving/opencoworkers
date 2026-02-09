@@ -1,0 +1,37 @@
+{
+  "activeSessions": {},
+  "errorLog": [
+    {
+      "timestamp": "2026-02-02T23:19:41.685Z",
+      "message": "Sync failure #1",
+      "code": "SYNC_ERROR"
+    },
+    {
+      "timestamp": "2026-02-02T23:20:05.954Z",
+      "message": "Sync failure #2",
+      "code": "SYNC_ERROR"
+    },
+    {
+      "timestamp": "2026-02-02T23:25:24.158Z",
+      "message": "Sync failure #1",
+      "code": "SYNC_ERROR"
+    },
+    {
+      "timestamp": "2026-02-03T04:57:14.490Z",
+      "message": "Sync failure #1",
+      "code": "SYNC_ERROR"
+    },
+    {
+      "timestamp": "2026-02-03T05:34:45.129Z",
+      "message": "Sync failure #1",
+      "code": "SYNC_ERROR"
+    },
+    {
+      "timestamp": "2026-02-03T05:36:00.597Z",
+      "message": "Sync failure #1",
+      "code": "SYNC_ERROR"
+    }
+  ],
+  "archivedSessions": [],
+  "lastPollTimestamp": "2026-02-03T05:41:09.899Z"
+}

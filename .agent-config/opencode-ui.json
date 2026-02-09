@@ -1,0 +1,21 @@
+{
+  "providers": {
+    "my-openai-provider": {
+      "name": "my-openai-provider",
+      "sdk": "@ai-sdk/anthropic",
+      "apiKey": "sk-test-verification-key",
+      "enabled": true
+    }
+  },
+  "mcpServers": {
+    "filesystem": {
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropics/mcp-server-filesystem"
+      ],
+      "enabled": true
+    }
+  }
+}

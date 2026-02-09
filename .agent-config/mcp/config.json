@@ -1,0 +1,34 @@
+{
+    "mcpServers": {
+        "filesystem": {
+            "type": "local",
+            "command": [
+                "npx",
+                "-y",
+                "@modelcontextprotocol/server-filesystem",
+                "/home/enving/Dev"
+            ]
+        },
+        "grep": {
+            "type": "local",
+            "command": [
+                "npx",
+                "tsx",
+                "services/daemon/mcp/grep-server.ts"
+            ]
+        },
+        "webdav": {
+            "type": "local",
+            "command": [
+                "npx",
+                "tsx",
+                "services/daemon/mcp/webdav-server.ts"
+            ],
+            "env": {
+                "WEBDAV_URL": "${WEBDAV_URL}",
+                "WEBDAV_USER": "${WEBDAV_USER}",
+                "WEBDAV_PASS": "${WEBDAV_PASS}"
+            }
+        }
+    }
+}

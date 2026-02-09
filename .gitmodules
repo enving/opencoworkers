@@ -1,0 +1,6 @@
+[submodule "vendor/openclaw"]
+	path = vendor/openclaw
+	url = https://github.com/openclaw/openclaw.git
+[submodule "vendor/OpenCode-Config-Manager"]
+	path = vendor/OpenCode-Config-Manager
+	url = https://github.com/icysaintdx/OpenCode-Config-Manager

@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "autoSync": true,
+  "skills": [
+    {
+      "name": "git-commit",
+      "repository": "https://github.com/opencoworkers/skills-git.git",
+      "commit": "abc123def456789",
+      "enabled": true,
+      "permissions": ["read", "write"]
+    },
+    {
+      "name": "file-search",
+      "repository": "https://github.com/opencoworkers/skills-search.git",
+      "commit": "def789abc123456",
+      "enabled": true,
+      "permissions": ["read"]
+    },
+    {
+      "name": "docker-build",
+      "repository": "https://github.com/opencoworkers/skills-docker.git",
+      "commit": "789abc123def456",
+      "enabled": false,
+      "permissions": ["read", "write", "execute"]
+    }
+  ]
+}

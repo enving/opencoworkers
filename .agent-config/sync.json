@@ -1,0 +1,21 @@
+{
+  "adapter": "none",
+  "sync": {
+    "tasksFile": ".agent-config/project/tasks.json"
+  },
+  "daemon": {
+    "enabled": true,
+    "pollingInterval": 60,
+    "webhook": {
+      "enabled": true,
+      "port": 3847,
+      "secret": "dev-secret"
+    }
+  },
+  "server": {
+    "autoTrigger": true,
+    "baseUrl": "http://localhost:7852",
+    "password": "opencode-sandbox",
+    "maxConcurrentAgents": 3
+  }
+}

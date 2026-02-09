@@ -1,0 +1,89 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]: O
+      - generic [ref=e8]: OpenCoworkers
+    - navigation [ref=e9]:
+      - button "Dashboard" [ref=e10] [cursor=pointer]:
+        - img [ref=e11]
+        - text: Dashboard
+      - button "Chat" [ref=e16] [cursor=pointer]:
+        - img [ref=e17]
+        - text: Chat
+      - button "Memories" [ref=e19] [cursor=pointer]:
+        - img [ref=e20]
+        - text: Memories
+      - button "Tickets" [ref=e30] [cursor=pointer]:
+        - img [ref=e31]
+        - text: Tickets
+      - button "Agents" [ref=e34] [cursor=pointer]:
+        - img [ref=e35]
+        - text: Agents
+      - button "Settings" [ref=e37] [cursor=pointer]:
+        - img [ref=e38]
+        - text: Settings
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - generic [ref=e44]: Agent Fleet
+          - generic [ref=e45]: 0/0 UP
+        - paragraph [ref=e47]: No servers configured
+      - generic [ref=e48]:
+        - paragraph [ref=e50]: Default Node
+        - paragraph [ref=e51]: Local Runtime
+        - paragraph [ref=e52]: localhost
+  - main [ref=e53]:
+    - generic [ref=e55]:
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - heading "OpenCoworkers" [level=1] [ref=e58]
+          - paragraph [ref=e59]: Virtual Workforce Dashboard
+        - generic [ref=e60]:
+          - generic [ref=e63]: Checking...
+          - button "Toggle theme" [ref=e64] [cursor=pointer]:
+            - img [ref=e65]
+      - generic [ref=e67]:
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - generic [ref=e81]:
+                - img [ref=e82]
+                - heading "Agent Logs" [level=2] [ref=e84]
+                - generic [ref=e85]: (0 entries)
+              - generic [ref=e86]:
+                - button "Copy Logs" [ref=e87] [cursor=pointer]:
+                  - img [ref=e88]
+                  - text: Copy Logs
+                - button "Refresh" [ref=e91] [cursor=pointer]
+            - generic [ref=e92]:
+              - generic [ref=e93]:
+                - img [ref=e94]
+                - combobox [ref=e96]:
+                  - option "All Agents" [selected]
+              - combobox [ref=e97]:
+                - option "All Tickets" [selected]
+              - combobox [ref=e98]:
+                - option "All Results" [selected]
+                - option "Success"
+                - option "Failure"
+                - option "Pending"
+          - generic [ref=e100]:
+            - img [ref=e102]
+            - heading "Failed to load logs" [level=3] [ref=e104]
+            - paragraph [ref=e105]: Failed to fetch logs
+            - button "Retry" [ref=e106] [cursor=pointer]
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]:
+              - img [ref=e112]
+              - heading "Live Monitor" [level=3] [ref=e114]
+            - generic [ref=e117]: "0"
+          - generic [ref=e119]:
+            - img [ref=e121]
+            - paragraph [ref=e123]: Connection lost. Retrying...
+            - paragraph [ref=e124]: Remote server unreachable
+            - button "Force Reconnect" [ref=e125] [cursor=pointer]
+```

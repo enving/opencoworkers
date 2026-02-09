@@ -1,0 +1,22 @@
+{
+  "id": "34bd96d7-5c4c-4e66-a76c-c6d47a4d32ab",
+  "title": "Explain my codebase",
+  "messages": [
+    {
+      "id": "9ff1c43b-e29e-4f48-b716-f20f84f0a515",
+      "role": "user",
+      "content": "Explain my codebase",
+      "timestamp": "2026-02-08T13:34:06.471Z"
+    },
+    {
+      "id": "fdafdd9f-59f0-4ca2-ac16-d8c2562b6b4f",
+      "role": "assistant",
+      "content": "No response received from the AI model.",
+      "timestamp": "2026-02-08T13:34:10.676Z",
+      "model": "claude-sonnet-4-20250514"
+    }
+  ],
+  "model": "claude-sonnet-4-20250514",
+  "createdAt": "2026-02-08T13:34:06.470Z",
+  "updatedAt": "2026-02-08T13:34:10.676Z"
+}

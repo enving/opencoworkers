@@ -1,0 +1,83 @@
+{
+  "name": "@opencoworkers/root",
+  "version": "4.0.1",
+  "description": "OpenCoworkers - Virtual Workforce Automation Platform",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "concurrently \"npm run dev:ui\" \"npm run dev:daemon\"",
+    "dev:ui": "cd services/web-ui && npm run dev",
+    "dev:daemon": "tsx services/daemon/cli/index.ts start",
+    "fix:env": "fuser -k 3847/tcp 5173/tcp 4096/tcp && pkill -f node && pkill -f vite",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
+    "test:watch": "NODE_OPTIONS='--experimental-vm-modules' jest --watch",
+    "test:coverage": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage",
+    "lint": "eslint services/daemon/ --ext .ts",
+    "lint:fix": "eslint services/daemon/ --ext .ts --fix",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "opencode",
+    "plugin",
+    "project-management",
+    "plane",
+    "notion",
+    "linear",
+    "sync",
+    "tickets"
+  ],
+  "author": "Tristan Häfele <https://de.linkedin.com/in/tristan-wilms-812b8011b>",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "dependencies": {
+    "@casl/ability": "^6.8.0",
+    "@fastify/cors": "^11.2.0",
+    "@fastify/http-proxy": "^11.4.1",
+    "@fastify/jwt": "^10.0.0",
+    "@modelcontextprotocol/sdk": "^1.25.3",
+    "@opencode-ai/plugin": "^1.1.21",
+    "@opencode-ai/sdk": "^1.1.21",
+    "@types/uuid": "^11.0.0",
+    "@xenova/transformers": "^2.17.2",
+    "ajv": "^8.12.0",
+    "axios": "^1.6.0",
+    "chokidar": "^3.5.3",
+    "chromadb": "^3.2.2",
+    "dotenv": "^16.0.3",
+    "eventsource": "^4.1.0",
+    "fastify": "^5.7.1",
+    "pptxgenjs": "^4.0.1",
+    "sharp": "^0.34.5",
+    "tslib": "^2.8.1",
+    "undici": "^5.28.0",
+    "uuid": "^13.0.0",
+    "webdav": "^5.8.0",
+    "zod": "^4.1.8"
+  },
+  "overrides": {
+    "undici": "^5.28.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.5",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^22.13.9",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^8.55.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

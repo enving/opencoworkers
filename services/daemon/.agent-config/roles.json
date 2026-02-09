@@ -1,0 +1,160 @@
+{
+  "version": "1.0.0",
+  "roles": {
+    "admin": {
+      "can": [
+        [
+          "manage",
+          "all"
+        ]
+      ]
+    },
+    "user": {
+      "can": [
+        [
+          "read",
+          "Task"
+        ],
+        [
+          "read",
+          "File"
+        ],
+        [
+          "read",
+          "Skill"
+        ],
+        [
+          "create",
+          "Task"
+        ]
+      ],
+      "cannot": [
+        [
+          "execute",
+          "Skill"
+        ]
+      ]
+    },
+    "junior-agent": {
+      "can": [
+        [
+          "read",
+          "all"
+        ],
+        [
+          "execute",
+          "Skill",
+          {
+            "riskLevel": "low"
+          }
+        ]
+      ],
+      "cannot": [
+        [
+          "execute",
+          "Skill",
+          {
+            "riskLevel": "medium"
+          }
+        ],
+        [
+          "execute",
+          "Skill",
+          {
+            "riskLevel": "high"
+          }
+        ],
+        [
+          "execute",
+          "File"
+        ],
+        [
+          "delete",
+          "File"
+        ],
+        [
+          "delete",
+          "Task"
+        ],
+        [
+          "delete",
+          "Config"
+        ]
+      ]
+    },
+    "senior-agent": {
+      "can": [
+        [
+          "read",
+          "all"
+        ],
+        [
+          "write",
+          "all"
+        ],
+        [
+          "create",
+          "all"
+        ],
+        [
+          "update",
+          "all"
+        ],
+        [
+          "execute",
+          "all"
+        ]
+      ],
+      "cannot": [
+        [
+          "delete",
+          "Config",
+          {
+            "type": "opencode"
+          }
+        ],
+        [
+          "delete",
+          "File",
+          {
+            "isSensitive": true
+          }
+        ]
+      ]
+    },
+    "auditor-agent": {
+      "can": [
+        [
+          "read",
+          "all"
+        ]
+      ],
+      "cannot": [
+        [
+          "write",
+          "all"
+        ],
+        [
+          "create",
+          "all"
+        ],
+        [
+          "update",
+          "all"
+        ],
+        [
+          "delete",
+          "all"
+        ],
+        [
+          "execute",
+          "all"
+        ],
+        [
+          "manage",
+          "all"
+        ]
+      ]
+    }
+  }
+}

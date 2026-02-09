@@ -1,0 +1,24 @@
+{
+  "name": "Employee Onboarding",
+  "description": "Standard workflow for onboarding a new team member",
+  "tasks": [
+    {
+      "title": "Create Email Account",
+      "description": "Provision Google Workspace account for new hire. Use /email skill to draft welcome email.",
+      "skill": "email",
+      "priority": "high"
+    },
+    {
+      "title": "Schedule Intro Meeting",
+      "description": "Schedule 30min intro meeting with team. Use /calendar skill.",
+      "skill": "calendar",
+      "priority": "medium"
+    },
+    {
+      "title": "Prepare Hardware Request",
+      "description": "Create IT ticket for laptop provisioning.",
+      "skill": "docx",
+      "priority": "high"
+    }
+  ]
+}
